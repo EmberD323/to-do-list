@@ -47,14 +47,42 @@ const loadHome = (function(){
 
                 const heading1DOM = document.createElement("div");
                 heading1DOM.classList.add("heading");
-                heading1DOM.textContent = "My to-dos";
+                heading1DOM.textContent = "My upcoming to-dos";
                 todoDOM.appendChild(heading1DOM);
-
-                const list1DOM = document.createElement("div");
-                list1DOM.classList.add("list");
-                list1DOM.textContent = "List of 5 to-dos";
-                todoDOM.appendChild(list1DOM);
+                let toDoStorage = JSON.parse(localStorage.getItem("todo"));
+                //order by date
+                toDoStorage.sort((a,b)=>{
+                    const dueDateA = a.duedate;
+                    const dueDateB  = b.duedate;
+                    if (dueDateA<dueDateB) {
+                      return -1; 
+                    } 
+                    else if (dueDateA>dueDateB) {
+                      return 1;
+                    }
+                    // a must be equal to b
+                    return 0;
+                });
+                console.log("Ordered");
+                console.log(toDoStorage);
             
+
+                for(let i=0;i<5;i++){
+                    const listDOM = document.createElement("div");
+                    listDOM.classList.add("list");
+                    todoDOM.appendChild(listDOM);
+
+                    const listTitleDOM = document.createElement("div");
+                    listTitleDOM.classList.add("title");
+                    listTitleDOM.textContent = toDoStorage[i].title;
+                    listDOM.appendChild(listTitleDOM);
+
+                    const listDueDateDOM = document.createElement("div");
+                    listDueDateDOM.classList.add("title");
+                    listDueDateDOM.textContent = toDoStorage[i].duedate;
+                    listDOM.appendChild(listDueDateDOM);
+                    
+                }
             const projectDOM = document.createElement("div");
             projectDOM.classList.add("project");
             sidebarDOM.appendChild(projectDOM);
@@ -248,40 +276,8 @@ const loadHome = (function(){
                 addbuttonDOM.textContent = "Submit";
                 formDOM.appendChild(addbuttonDOM);
                 
-            const recentlyDOM = document.createElement("div");
-            recentlyDOM.classList.add("recently");
-            bodyDOM.appendChild(recentlyDOM);
-
-                const recentlytitleDOM = document.createElement("div");
-                recentlytitleDOM.classList.add("title");
-                recentlytitleDOM.textContent = "Recently added"
-                recentlyDOM.appendChild(recentlytitleDOM);
-
-                const recentlylistDOM = document.createElement("div");
-                recentlylistDOM.classList.add("list");
-                recentlyDOM.appendChild(recentlylistDOM);
-
-                    const recently1descDOM = document.createElement("div");
-                    recently1descDOM.classList.add("description");
-                    recently1descDOM.textContent = "Clean the kitchen";
-                    recentlylistDOM.appendChild(recently1descDOM);
-
-                    const recently1dueDOM = document.createElement("div");
-                    recently1dueDOM.classList.add("duedate");
-                    recently1dueDOM.textContent = "24-09-2024";
-                    recentlylistDOM.appendChild(recently1dueDOM);
-
-                    const recentlydeleteDOM = document.createElement("button");
-                    recentlydeleteDOM.classList.add("delete");
-                    recentlydeleteDOM.textContent = "x";
-                    recentlylistDOM.appendChild(recentlydeleteDOM);
-
-                const seeallDOM = document.createElement("button");
-                seeallDOM.classList.add("seeall");
-                seeallDOM.textContent ="See All"
-                recentlyDOM.appendChild(seeallDOM);
     return{};
-})();
+});
 
 export default loadHome;
 

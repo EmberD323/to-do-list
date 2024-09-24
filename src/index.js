@@ -2,9 +2,11 @@ import "./styles.css";
 
 import { compareAsc, format } from "date-fns";
 import loadHome from "./homepage.js";
+loadHome();
 
-//DOM selectors
+//DOM selector
 const DOM = document.querySelector(".content").childNodes;
+const contentDOM = document.querySelector(".content");
 const bodyDOM = DOM[3].childNodes;
 const formDOM = bodyDOM[0].childNodes;
 console.log("Form DOM");
@@ -54,8 +56,8 @@ const ToDoData = (function(){
     function addToArray(object){
         return toDoArray.push(object);
     }
-    function removeFromArray(number){
-        return toDoArray.splice(number,1);
+    function removeFromArray(array,number){
+        return array.splice(number,1);
     }
     
     return {createObject,addToArray,removeFromArray};
@@ -80,43 +82,51 @@ const Form = (function(){
    return {clearForm};
 })();
 
-const Store = (function(){
+const Storage = (function(){
     function setLocalStore(array){
-        const todo = JSON.stringify(array);
+        
+        const newArrayJSON = JSON.stringify(array);
         console.log("JSON string saved to local storage");
-        console.log(todo);
-        localStorage.setItem("todo",todo)
+        console.log(newArrayJSON);
+        localStorage.setItem("todo",newArrayJSON);
+        
 
     }
     function getLocalStore(){
-        return JSON.parse(localStorage.getItem("todo"));
+         let storedArrayOnLoad = JSON.parse(localStorage.getItem("todo"));
+         return storedArrayOnLoad
     }
     return{setLocalStore,getLocalStore}
 })();
 //submit user input data to local storage
 const formSubmitButtonDOM = formDOM[13];
 
+//reading storage 
+let toDoArray = Storage.getLocalStore();
+if(toDoArray == null){toDoArray =[]}
+console.log("Stored data");
+console.log(toDoArray)
 
-let toDoArray = [];
+
+//adding a todo
 formSubmitButtonDOM.addEventListener("click",(e)=>{
     e.preventDefault();
     //module to create object
     let formInputs = ToDoData.createObject();
+    console.log("submission Object");
+    console.log(formInputs);
     //method to add to array
-    ToDoData.addToArray(formInputs);
-    console.log("toDoArray after submit button clicked");
+     ToDoData.addToArray(formInputs)
+    console.log("new array");
     console.log(toDoArray);
-    //store data locally
-    Store.setLocalStore(toDoArray);
+    //add to storage
+    Storage.setLocalStore(toDoArray);
 
-    //clearform
-    Form.clearForm();
+    //delete old page and refresh lists
+    contentDOM.innerHTML=""; 
+    loadHome();
     
 });
-
-//function factory create todoobject
-
-
 
 //how to use date.fns
 format(new Date(2014, 1, 11), "yyyy-MM-dd");
