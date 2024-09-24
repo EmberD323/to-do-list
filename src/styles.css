@@ -1,0 +1,27 @@
+:root{
+    box-sizing: border-box;
+}
+
+.content{
+    display:grid;
+    grid-template-areas: "sidebar header" "sidebar body";
+    grid-template-columns: 1fr 6fr;
+
+}
+.content>*{
+    border: 1px solid red;
+}
+
+.header{
+    grid-area: header;
+    display:flex;
+    justify-content: space-around;
+}
+
+.sidebar{
+    grid-area: sidebar;
+}
+
+.body{
+    grid-area: body;
+}
