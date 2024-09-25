@@ -376,23 +376,26 @@ toDoFormSubmitButtonDOM.addEventListener("click",(e)=>{
 const projectFormSubmitButtonDOM = bodyDOM[3].childNodes[7].childNodes[3].childNodes[5];
 projectFormSubmitButtonDOM.addEventListener("click",(e)=>{
     e.preventDefault();
+    let projectName = projectNameInputDOM.value
+    if (projectName == "") {
+        alert("Project Name must be filled out");
+    }
+    else {
+        //create object for project
+        let newProject = new ProjectData.CreateObject;
 
-    //create object for project
-    let newProject = new ProjectData.CreateObject;
+        //add object to array of project objects
+        ProjectData.addToArray(newProject);
 
-    //add object to array of project objects
-    ProjectData.addToArray(newProject);
+        //add to storage
+        Storage.setLocalStore(projectArray,"project");
+        
+        //delete old page and refresh lists
+        Form.clearProjectForm();
 
-    //add to storage
-    Storage.setLocalStore(projectArray,"project");
-    
-    //delete old page and refresh lists
-    Form.clearProjectForm();
-
-    //add project to page
-    ProjectDisplay.add(newProject);
-
-    
+        //add project to page
+        ProjectDisplay.add(newProject);
+    }
 });
 
 //detail buttons
