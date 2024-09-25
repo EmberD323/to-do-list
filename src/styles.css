@@ -26,20 +26,28 @@
     grid-area: body;
 }
 
-.sidebar>.todo{
-    display:grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: repeat(6,1fr);
-    
-
-}
-
 .sidebar>.todo>*{
     border:1px solid blue;
 }
 
-.list{
-    grid-column: 1/3;
+.list{ 
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 1fr;
 }
+
+.projectDisplay>*{
+    border:1px solid purple;
+
+}
+
+.projectDisplay{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+
+.topthree>*{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+
+}
+

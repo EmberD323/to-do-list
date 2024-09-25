@@ -40,11 +40,6 @@ const loadHome = (function(){
             todoDOM.classList.add("todo");
             sidebarDOM.appendChild(todoDOM);
 
-                const addbutton1DOM = document.createElement("button");
-                addbutton1DOM.classList.add("add");
-                addbutton1DOM.textContent = "+";
-                todoDOM.appendChild(addbutton1DOM);
-
                 const heading1DOM = document.createElement("div");
                 heading1DOM.classList.add("heading");
                 heading1DOM.textContent = "My upcoming to-dos";
@@ -102,7 +97,7 @@ const loadHome = (function(){
                 list2DOM.textContent = "List of 5 projects";
                 projectDOM.appendChild(list2DOM); 
 
-        //body
+        //body 
         const bodyDOM = document.createElement("div");
         bodyDOM.classList.add("body");
         contentDOM.appendChild(bodyDOM);
@@ -275,10 +270,29 @@ const loadHome = (function(){
                 addbuttonDOM.type = "submit";
                 addbuttonDOM.textContent = "Submit";
                 formDOM.appendChild(addbuttonDOM);
+
+            const projectAreaDOM = document.createElement("div");
+            projectAreaDOM.id = "projectArea";
+            bodyDOM.appendChild(projectAreaDOM);
                 
     return{};
 });
 
+//how to use date.fns
+format(new Date(2014, 1, 11), "yyyy-MM-dd");
+//=> '2014-02-11'
+
+const dates = [
+  new Date(1995, 6, 2),
+  new Date(1987, 1, 11),
+  new Date(1989, 6, 10),
+];
+dates.sort(compareAsc);
+//=> [
+//   Wed Feb 11 1987 00:00:00,
+//   Mon Jul 10 1989 00:00:00,
+//   Sun Jul 02 1995 00:00:00
+// ]
 export default loadHome;
 
 
