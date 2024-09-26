@@ -51,7 +51,20 @@ const ProjectData = (function(){
     function addToArray(object){
         return projectArray.push(object);
     }
-    return {CreateObject,addToArray}
+    function addTodo(toDoObject,projectname){
+        for(let i=0;i<projectArray.length;i++){
+            if(projectArray[i].name==projectname){
+                if(projectArray[i].todoArray==null){
+                    projectArray[i].todoArray = [toDoObject]
+                }
+                else{
+                    projectArray[i].todoArray.push(toDoObject);
+                    
+                }
+            }
+        }
+    }
+    return {CreateObject,addToArray,addTodo}
 })();
 const Form = (function(){
     function clearToDoForm(){
@@ -132,29 +145,6 @@ const ProjectDisplay = (function(){
         topThreeDOM.classList.add("topthree");
         newProjectDOM.appendChild(topThreeDOM);
 
-        for(let i=1;i<4;i++){
-            const toDoDOM = document.createElement("div");
-            toDoDOM.classList.add("todo"+i);
-            topThreeDOM.appendChild(toDoDOM);
-
-            const titleDOM = document.createElement("div");
-            titleDOM.classList.add("title");
-            titleDOM.textContent = "example";
-            toDoDOM.appendChild(titleDOM);
-
-            const dueDOM = document.createElement("div");
-            dueDOM.classList.add("due");
-            dueDOM.textContent = "21-09-2025";
-            toDoDOM.appendChild(dueDOM);
-
-            const detailButtonDOM = document.createElement("button");
-            detailButtonDOM.classList.add("detail");
-            detailButtonDOM.textContent = "Detail";
-            toDoDOM.appendChild(detailButtonDOM);
-
-
-        }
-
         const SeeAllButtonDOM = document.createElement("button");
         SeeAllButtonDOM.classList.add("seeall");
         SeeAllButtonDOM.id = object.name;
@@ -187,13 +177,84 @@ const ProjectDisplay = (function(){
             projectDetailDOM.appendChild(detailDOM);
           }
     }
-    return{add,detail}
+    function displayAllProjects(array){
+
+
+        for(let y=0;y<array.length;y++){
+            const newProjectDOM = document.createElement("div");
+            newProjectDOM.classList.add("project");
+            projectDisplay.appendChild(newProjectDOM);
+
+            //object.name
+            const projectNameDOM = document.createElement("div");
+            projectNameDOM.classList.add("name");
+            projectNameDOM.textContent = array[y].name;
+            newProjectDOM.appendChild(projectNameDOM);
+
+            //top3todo
+            const topThreeDOM = document.createElement("div");
+            topThreeDOM.classList.add("topthree");
+            newProjectDOM.appendChild(topThreeDOM);
+
+            let i = 0;
+            let object = array[y];
+
+            if(array[y].todoArray == 0){
+                i=4;
+            }
+            else if(array[y].todoArray.length == 1){
+                i=3;
+            }
+            else if(array[y].todoArray.length == 2){
+                i=2;
+            }
+            else if(array[y].todoArray.length >= 3){
+                i=1;
+            }
+            for(i;i<4;i++){
+                const toDoDOM = document.createElement("div");
+                toDoDOM.classList.add("todo"+i);
+                topThreeDOM.appendChild(toDoDOM);
+    
+                const titleDOM = document.createElement("div");
+                titleDOM.classList.add("title");
+                titleDOM.textContent = array[y].todoArray[i-1].title;
+                toDoDOM.appendChild(titleDOM);
+    
+                const dueDOM = document.createElement("div");
+                dueDOM.classList.add("due");
+                dueDOM.textContent = array[y].todoArray[i-1].duedate;
+                toDoDOM.appendChild(dueDOM);
+    
+                const detailButtonDOM = document.createElement("button");
+                detailButtonDOM.classList.add("detail");
+                detailButtonDOM.textContent = "Detail";
+                toDoDOM.appendChild(detailButtonDOM);
+    
+    
+            }
+
+            const SeeAllButtonDOM = document.createElement("button");
+            SeeAllButtonDOM.classList.add("seeall");
+            SeeAllButtonDOM.id = array[y].name;
+            SeeAllButtonDOM.textContent = "See All";
+            newProjectDOM.appendChild(SeeAllButtonDOM);
+
+            const AddButtonDOM = document.createElement("button");
+            AddButtonDOM.classList.add("add");
+            AddButtonDOM.textContent = "Add";
+            newProjectDOM.appendChild(AddButtonDOM);
+
+        }
+
+    }
+    return{add,detail,displayAllProjects}
 })();
 //reading storage 
 let toDoArray = Storage.getLocalStore("todo");
 if(toDoArray == null){toDoArray =[]};
 let projectArray = Storage.getLocalStore("project");
-if(projectArray == null){projectArray =[{name:"All todos",toDoArray:toDoArray}]};
+if(projectArray == null){projectArray =[{name:"All todos",todoArray:toDoArray}]};
 
 //toDoArray.splice(1,2);
 
@@ -262,38 +323,7 @@ const UpcomingToDos = (function(){
         }
 
     }
-    function displayProjectsTopThree(){
-        const topthreeDOM = projectDisplay.childNodes[1].childNodes[3]
-        //delete oldcontent
-        topthreeDOM.innerHTML ="";
 
-        //order by date
-        Storage.sortByDate();
-        
-
-        for(let i=0;i<3;i++){
-            const todoDOM = document.createElement("div");
-            todoDOM.classList.add("todo"+(i+1));
-            topthreeDOM.appendChild(todoDOM);
-        
-            const todoTitleDOM = document.createElement("div");
-            todoTitleDOM.classList.add("title");
-            todoTitleDOM.textContent = toDoArray[i].title;
-            todoDOM.appendChild(todoTitleDOM);
-        
-            const todoDueDateDOM = document.createElement("div");
-            todoDueDateDOM.classList.add("duedate");
-            todoDueDateDOM.textContent = toDoArray[i].duedate;
-            todoDOM.appendChild(todoDueDateDOM);
-
-            const todoDetailButtonDOM = document.createElement("button");
-            todoDetailButtonDOM.classList.add("detail");
-            todoDetailButtonDOM.textContent = "Detail";
-            todoDetailButtonDOM.id = i;
-            todoDOM.appendChild(todoDetailButtonDOM);
-        }
-
-    }
     function displayProjectsAll(){
         const topthreeDOM = projectDisplay.childNodes[1].childNodes[3]
         //delete oldcontent
@@ -326,7 +356,7 @@ const UpcomingToDos = (function(){
         }
 
     }
-    return{displaySidebarTopFive,displayProjectsTopThree,displayProjectsAll}
+    return{displaySidebarTopFive,displayProjectsAll}
 })();
 
 //display upcoming todos on sidebar
@@ -335,10 +365,8 @@ UpcomingToDos.displaySidebarTopFive();
 //add project names to todoForm
 Form.addProjects(projectArray);
 
-
-//display upcoming todos in all todos projecy
-UpcomingToDos.displayProjectsTopThree();
-
+//display all projects on page load
+ProjectDisplay.displayAllProjects(projectArray);
 
 //eventlisteners
 //adding a todo
@@ -363,11 +391,19 @@ toDoFormSubmitButtonDOM.addEventListener("click",(e)=>{
         //add to storage
         Storage.setLocalStore(toDoArray,"todo");
 
-        //delete old page and refresh lists
-        Form.clearToDoForm();
+        
 
         //refresh upcoming to-dos
         UpcomingToDos.displaySidebarTopFive();
+
+        //add todo object to project selected
+        let projectName = projectChoices.value;
+        ProjectData.addTodo(formInputs,projectName);
+        //store newproject data
+        Storage.setLocalStore(projectArray,"project")
+
+        //delete old page and refresh lists
+        Form.clearToDoForm();
     }
 });
 
@@ -417,7 +453,6 @@ seeAllButtons.forEach((button)=>{
     button.addEventListener("click",(e)=>{
         //button id = project name
         let projectName = e.target.id;
-        console.log(projectName);
         //find name in project list - pause need to have project list set up with to dos.
         
     });
