@@ -163,20 +163,6 @@ const ProjectDisplay = (function(){
 
 
     }
-    function detail(object){
-        //ProjectDisplay.detail(todoInfo);
-        //delete old info
-        projectDetailDOM.innerHTML="";
-
-        //add info
-
-        for (const key in object) {
-            const detailDOM = document.createElement("div");
-            detailDOM.classList.add(`${key}`);
-            detailDOM.textContent = `${key}: ${object[key]}`;
-            projectDetailDOM.appendChild(detailDOM);
-          }
-    }
     function displayAllProjects(array){
 
 
@@ -248,7 +234,54 @@ const ProjectDisplay = (function(){
         }
 
     }
-    return{add,detail,displayAllProjects}
+    function detail(object){
+        //ProjectDisplay.detail(todoInfo);
+        //delete old info
+        projectDetailDOM.innerHTML="";
+
+        //add info
+
+        for (const key in object) {
+            const detailDOM = document.createElement("div");
+            detailDOM.classList.add(`${key}`);
+            detailDOM.textContent = `${key}: ${object[key]}`;
+            projectDetailDOM.appendChild(detailDOM);
+          }
+    }
+    function seeAll(object){
+        //delete old info
+        projectDetailDOM.innerHTML="";
+
+        //project name
+        const seeAllDOM = document.createElement("div");
+        seeAllDOM.classList.add("name");
+        seeAllDOM.textContent = "Project : " +  object.name;
+        projectDetailDOM.appendChild(seeAllDOM);
+
+        //toDos
+
+        for(let i = 0;i<object.todoArray.length;i++){
+            const toDoDOM = document.createElement("div");
+            toDoDOM.classList.add("todo"+i);
+            projectDetailDOM.appendChild(toDoDOM);
+
+            const titleDOM = document.createElement("div");
+            titleDOM.classList.add("title");
+            titleDOM.textContent = object.todoArray[i].title;
+            toDoDOM.appendChild(titleDOM);
+
+            const dueDOM = document.createElement("div");
+            dueDOM.classList.add("due");
+            dueDOM.textContent = object.todoArray[i].duedate;
+            toDoDOM.appendChild(dueDOM);
+
+
+        }
+
+      
+    }
+    
+    return{add,detail,displayAllProjects,seeAll}
 })();
 //reading storage 
 let toDoArray = Storage.getLocalStore("todo");
@@ -453,8 +486,16 @@ seeAllButtons.forEach((button)=>{
     button.addEventListener("click",(e)=>{
         //button id = project name
         let projectName = e.target.id;
-        //find name in project list - pause need to have project list set up with to dos.
-        
+        console.log("project clicked");
+        console.log(projectName);
+        //get just that project object
+        function findProject(project) {
+            return project.name === projectName;
+          }
+        let selectedProject = projectArray.find(findProject);
+        //display all todos 
+        ProjectDisplay.seeAll(selectedProject);
+
     });
 
 });
