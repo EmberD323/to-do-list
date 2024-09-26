@@ -87,10 +87,16 @@ const Form = (function(){
 
         //for each project in array add a option with value=project.name and text content=project.name
         for(let i=0;i<array.length;i++){
-            const optionDOM = document.createElement("option");
-            optionDOM.value = array[i].name;
-            optionDOM.textContent = array[i].name;
-            projectChoices.appendChild(optionDOM);
+            if (array[i].name == "All todos" ){
+
+            }
+            else{
+                const optionDOM = document.createElement("option");
+                optionDOM.value = array[i].name;
+                optionDOM.textContent = array[i].name;
+                projectChoices.appendChild(optionDOM);
+            }
+            
         }
         
         
@@ -151,10 +157,32 @@ const ProjectDisplay = (function(){
         SeeAllButtonDOM.textContent = "See All";
         newProjectDOM.appendChild(SeeAllButtonDOM);
 
+        const addFormDOM = document.createElement("form");
+        addFormDOM.id = ("add");
+        newProjectDOM.appendChild(addFormDOM);
+        
+        const labelDOM = document.createElement("label");
+        labelDOM.textContent = "To Do:";
+        addFormDOM.appendChild(labelDOM);
+
+        const todoSelectDOM = document.createElement("select");
+        todoSelectDOM.name="todo";
+        todoSelectDOM.id="todo";
+        addFormDOM.appendChild(todoSelectDOM);
+
+        for(let i=0;i<projectArray[0].todoArray.length;i++){
+            const optionDOM = document.createElement("option");
+            optionDOM.value = object.todoArray.title;
+            optionDOM.textContent = projectArray[0].todoArray[i].title;
+            todoSelectDOM.appendChild(optionDOM);
+        }
+
         const AddButtonDOM = document.createElement("button");
         AddButtonDOM.classList.add("add");
         AddButtonDOM.textContent = "Add";
-        newProjectDOM.appendChild(AddButtonDOM);
+        AddButtonDOM.type = "submit";
+        AddButtonDOM.id = object.name;
+        addFormDOM.appendChild(AddButtonDOM);
 
         
 
@@ -182,34 +210,39 @@ const ProjectDisplay = (function(){
             topThreeDOM.classList.add("topthree");
             newProjectDOM.appendChild(topThreeDOM);
 
-            let i = 0;
-            let object = array[y];
+            let arrayLength = 0;
 
-            if(array[y].todoArray == 0){
-                i=4;
+            if(array[y].todoArray.length == 0){
+                arrayLength = 0;
             }
             else if(array[y].todoArray.length == 1){
-                i=3;
+                arrayLength = 1;
             }
             else if(array[y].todoArray.length == 2){
-                i=2;
+                arrayLength = 2;
             }
             else if(array[y].todoArray.length >= 3){
-                i=1;
+                arrayLength = 3;
             }
-            for(i;i<4;i++){
+            for(let i = 0;i<arrayLength;i++){
                 const toDoDOM = document.createElement("div");
-                toDoDOM.classList.add("todo"+i);
+                toDoDOM.classList.add("todo"+(i+1));
                 topThreeDOM.appendChild(toDoDOM);
+                console.log("from here");
+                console.log(y);
+                console.log(i);
+                console.log(array[y]);
+                console.log(array[y].todoArray[i]);
+                console.log(array[y].todoArray[i].title);
     
                 const titleDOM = document.createElement("div");
                 titleDOM.classList.add("title");
-                titleDOM.textContent = array[y].todoArray[i-1].title;
+                titleDOM.textContent = array[y].todoArray[i].title;
                 toDoDOM.appendChild(titleDOM);
     
                 const dueDOM = document.createElement("div");
                 dueDOM.classList.add("due");
-                dueDOM.textContent = array[y].todoArray[i-1].duedate;
+                dueDOM.textContent = array[y].todoArray[i].duedate;
                 toDoDOM.appendChild(dueDOM);
     
                 const detailButtonDOM = document.createElement("button");
@@ -226,10 +259,32 @@ const ProjectDisplay = (function(){
             SeeAllButtonDOM.textContent = "See All";
             newProjectDOM.appendChild(SeeAllButtonDOM);
 
+            const addFormDOM = document.createElement("form");
+            addFormDOM.id = ("add");
+            newProjectDOM.appendChild(addFormDOM);
+            
+            const labelDOM = document.createElement("label");
+            labelDOM.textContent = "To Do:";
+            addFormDOM.appendChild(labelDOM);
+
+            const todoSelectDOM = document.createElement("select");
+            todoSelectDOM.name="todo";
+            todoSelectDOM.id=array[y].name;
+            addFormDOM.appendChild(todoSelectDOM);
+
+            for(let i=0;i<array[0].todoArray.length;i++){
+                const optionDOM = document.createElement("option");
+                optionDOM.value = array[0].todoArray[i].title;
+                optionDOM.textContent = array[0].todoArray[i].title;
+                todoSelectDOM.appendChild(optionDOM);
+            }
+
             const AddButtonDOM = document.createElement("button");
             AddButtonDOM.classList.add("add");
             AddButtonDOM.textContent = "Add";
-            newProjectDOM.appendChild(AddButtonDOM);
+            AddButtonDOM.id = array[y].name;
+            AddButtonDOM.type = "submit";
+            addFormDOM.appendChild(AddButtonDOM);
 
         }
 
@@ -338,8 +393,30 @@ const UpcomingToDos = (function(){
         listDueDate1DOM.textContent = "Due Date";
         list1DOM.appendChild(listDueDate1DOM);
 
+        let i=0
+
+        if(toDoArray.length == 0){
+            i=5;
+        }
+        else if(toDoArray.length == 1){
+            i=4;
+        }
+        else if(toDoArray.length == 2){
+            i=3;
+        }
+        else if(toDoArray.length == 3){
+            i=2;
+        }
+        else if(toDoArray.length == 4){
+            i=1;
+        }
+        else if(toDoArray.length >= 5){
+            i=0;
+        }
         
-        for(let i=0;i<5;i++){
+
+        
+        for(i;i<5;i++){
             const listDOM = document.createElement("div");
             listDOM.classList.add("list");
             upcomingToDosDOM.appendChild(listDOM);
@@ -392,14 +469,25 @@ const UpcomingToDos = (function(){
     return{displaySidebarTopFive,displayProjectsAll}
 })();
 
+
+
+
 //display upcoming todos on sidebar
-UpcomingToDos.displaySidebarTopFive();
+//UpcomingToDos.displaySidebarTopFive();
+console.log(toDoArray);
 
-//add project names to todoForm
-Form.addProjects(projectArray);
+if(projectArray.length ==1){
 
-//display all projects on page load
-ProjectDisplay.displayAllProjects(projectArray);
+}
+else{
+    //add project names to todoForm
+    Form.addProjects(projectArray);
+    //display all projects on page load
+    ProjectDisplay.displayAllProjects(projectArray);
+}
+
+
+
 
 //eventlisteners
 //adding a todo
@@ -486,8 +574,6 @@ seeAllButtons.forEach((button)=>{
     button.addEventListener("click",(e)=>{
         //button id = project name
         let projectName = e.target.id;
-        console.log("project clicked");
-        console.log(projectName);
         //get just that project object
         function findProject(project) {
             return project.name === projectName;
@@ -499,8 +585,56 @@ seeAllButtons.forEach((button)=>{
     });
 
 });
-//displayProjectsAll
 
-//to do detail
+//see all buttons
+const addButtons = document.querySelectorAll(".add")
+addButtons.forEach((button)=>{ 
+    button.addEventListener("click",(e)=>{
+        e.preventDefault();
+        //button id = project name
+        let projectName = e.target.id;
+        console.log("project clicked");
+        console.log(projectName);
+
+        //select selected
+        const selectedDOM = document.querySelector("select[id='"+projectName+"']");
+        
+        let toDoTitle=selectedDOM.value;
+        console.log("to do name");
+        console.log(toDoTitle);
+        //change project in todo
+        
+
+        let toDoArrayTest = toDoArray.map((toDo)=>{
+            if(toDo.title ==toDoTitle){
+                toDo.project = projectName;
+                console.log("the matched array is now");
+                console.log(toDo);
+            }
+        });
+        console.log("to do array now");
+        console.log(toDoArrayTest)
+        //store toDoArray   
+        
+            
+        
+        
+
+
+
+        //add todo to project
+
+        
+        /*//get just that project object
+        function findProject(project) {
+            return project.name === projectName;
+          }
+        let selectedProject = projectArray.find(findProject);
+        //display all todos 
+        ProjectDisplay.seeAll(selectedProject);*/
+
+    });
+
+});
 
 
