@@ -45,9 +45,14 @@
     grid-template-columns: repeat(3,1fr);
 }
 
-.topthree>*{
+.toDoDisplay>*{
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: 1.5fr 1fr .5fr;
 
+}
+
+.deleteToDo{
+    width: 25px;
+    height: 25px;
 }
 

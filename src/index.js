@@ -17,6 +17,7 @@ const toDoFormStatusNotYetStartedDOM =toDoFormStatusDOM.childNodes[3].childNodes
 const toDoFormStatusStartedDOM =toDoFormStatusDOM.childNodes[5].childNodes[3];
 const toDoFormStatusCompletedDOM =toDoFormStatusDOM.childNodes[7].childNodes[3];
 const toDoFormSubmitButtonDOM = toDoFormDOM[27];
+const projectDisplayDOM = bodyDOM[3].childNodes[3];
 const projectFormSubmitButtonDOM = bodyDOM[3].childNodes[7].childNodes[3].childNodes[5];
 const projectFormNameDOM =bodyDOM[3].childNodes[7].childNodes[3].childNodes[3];
 
@@ -49,9 +50,11 @@ const CheckArray =(function(){
 const EditArray =(function(){
     function add(array,object) {
         return array.push(object);
-        
     }
-    return{add}
+    function remove(array,objectToDeleteIndex){
+        return array.splice(objectToDeleteIndex,1);
+    }
+    return{add,remove}
 })();
 
 
@@ -86,6 +89,91 @@ const Form = (function(){
    return {addProjects};
 })();
 
+const EventListener = (function(){
+    function deleteButtons(){
+        let deleteToDoButtons = document.querySelectorAll(".deleteToDo");
+        deleteToDoButtons.forEach((button)=>{ 
+            button.addEventListener("click",(e)=>{
+                console.log(deleteToDoButtons);
+                //project to delete from
+                let projectNameSelected = e.target.parentNode.parentNode.parentNode.childNodes[0].textContent;
+                //find project index in projectArray
+                let projectIndex = projectArray.findIndex(obj => obj.name == projectNameSelected);
+                console.log(projectIndex);
+        
+                //todo to delete
+                let toDoTitleSelected =e.target.parentNode.childNodes[0].textContent;
+                //todo index in projectArray[projectIndex]'s todoArray
+                let toDoIndex = projectArray[projectIndex].toDoArray.findIndex(obj => obj.title == toDoTitleSelected);
+                console.log(toDoIndex);
+                //delete todo from project
+                EditArray.remove(projectArray[projectIndex].toDoArray,toDoIndex);
+        
+                //store project array
+                Storage.setLocalStore(projectArray,"project");
+        
+                //refresh project display
+                ProjectDisplay.displayAllProjects(projectArray);
+            });
+        
+        });
+    }
+    return{deleteButtons}
+})();
+
+const ProjectDisplay = (function(){
+    
+    function displayAllProjects(array){
+        projectDisplayDOM.innerHTML="";
+        
+        for(let y=0;y<array.length;y++){
+            const newProjectDOM = document.createElement("div");
+            newProjectDOM.classList.add("project");
+            projectDisplayDOM.appendChild(newProjectDOM);
+
+            //object.name
+            const projectNameDOM = document.createElement("div");
+            projectNameDOM.classList.add("name");
+            projectNameDOM.textContent = array[y].name;
+            newProjectDOM.appendChild(projectNameDOM);
+
+            //.toDoDisplay
+            const toDoDisplayDOM = document.createElement("div");
+            toDoDisplayDOM.classList.add("toDoDisplay");
+            newProjectDOM.appendChild(toDoDisplayDOM);
+
+            //todo array length
+            let toDoArrayLength = array[y].toDoArray.length;
+            for(let i = 0;i<toDoArrayLength;i++){
+                const toDoDOM = document.createElement("div");
+                toDoDOM.classList.add("todo"+0);
+                toDoDisplayDOM.appendChild(toDoDOM);
+
+                const titleDOM = document.createElement("div");
+                titleDOM.classList.add("title");
+                titleDOM.textContent = array[y].toDoArray[i].title;
+                toDoDOM.appendChild(titleDOM);
+    
+                const dueDOM = document.createElement("div");
+                dueDOM.classList.add("due");
+                dueDOM.textContent = array[y].toDoArray[i].duedate;
+                toDoDOM.appendChild(dueDOM);
+
+                const deleteToDoButtonDOM = document.createElement("button");
+                deleteToDoButtonDOM.classList.add("deleteToDo");
+                deleteToDoButtonDOM.textContent = "x";
+                toDoDOM.appendChild(deleteToDoButtonDOM);
+            }
+            
+        }
+        //add the eventlisteners to buttons
+        EventListener.deleteButtons();
+        
+    }
+    return{displayAllProjects}
+})();
+
+  
 //read storage for existing project array
 let projectArray = Storage.getLocalStore("project");
     //if empty create with a (no project) object
@@ -103,6 +191,9 @@ Storage.setLocalStore(projectArray,"project");
 
 //add project names to todoForm
 Form.addProjects(projectArray);
+
+//display all projects on page load
+ProjectDisplay.displayAllProjects(projectArray);
 
 //adding a new project
 projectFormSubmitButtonDOM.addEventListener("click",(e)=>{
@@ -124,6 +215,10 @@ projectFormSubmitButtonDOM.addEventListener("click",(e)=>{
 
         //refresh project options in form
         Form.addProjects(projectArray);
+
+        //refresh project display
+        ProjectDisplay.displayAllProjects(projectArray);
+
 
         //clearform
 
@@ -179,13 +274,18 @@ toDoFormSubmitButtonDOM.addEventListener("click",(e)=>{
 
         //add to newToDo to toDoArray in project array index
         EditArray.add(projectArray[projectIndex].toDoArray,newToDoObject);
-        console.log("projectArray after adding new todo");
-        console.log(projectArray);
+        
         //store project array
         Storage.setLocalStore(projectArray,"project");
+
+        //refresh project display
+        ProjectDisplay.displayAllProjects(projectArray);
+
         //clear form
         document.querySelector("#toDoForm").reset();
 
     }
     
 });
+
+
