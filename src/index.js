@@ -134,13 +134,19 @@ const EventListener = (function(){
                 let projectToDeleteIndex = projectArray.findIndex(obj => obj.name == projectNameSelected);
                 
                 let noProjectIndex = projectArray.findIndex(obj => obj.name == "No project");
+
                 
                 //for all todo objects in todoarray add to no project
                 let projectToDeleteToDos = projectArray[projectToDeleteIndex].toDoArray;
                 let numberOfToDosInDeletedProject = projectToDeleteToDos.length;
                 for(let i=0;i<numberOfToDosInDeletedProject;i++){
+                    //and rename project name to noprojects
+                    projectToDeleteToDos[i].project = "No project";
                     EditArray.add(projectArray[noProjectIndex].toDoArray,projectToDeleteToDos[i]);
+                    
                 }
+
+
                 
                 //delete project from projectArray
                 EditArray.remove(projectArray,projectToDeleteIndex);
@@ -179,11 +185,18 @@ const EventListener = (function(){
                         break;
                     }
                 }
+
+                //change project name in to do
+                projectArray[removeFromProjectIndex].toDoArray[toDoToAddIndexInRemoveFromProject].project = addToProjectName;
+
                 //add todo to project
                 EditArray.add(projectArray[addToProjectIndex].toDoArray,projectArray[removeFromProjectIndex].toDoArray[toDoToAddIndexInRemoveFromProject]);
                 
                 //remove from other project
                 EditArray.remove(projectArray[removeFromProjectIndex].toDoArray,toDoToAddIndexInRemoveFromProject);
+
+                
+                
 
                 //store project array
                 Storage.setLocalStore(projectArray,"project");

@@ -590,14 +590,7 @@ const ProjectDisplay = (function(){
         //delete old info
         projectDetailDOM.innerHTML="";
 
-        //add info
-
-        for (const key in object) {
-            const detailDOM = document.createElement("div");
-            detailDOM.classList.add(`${key}`);
-            detailDOM.textContent = `${key}: ${object[key]}`;
-            projectDetailDOM.appendChild(detailDOM);
-          }
+        
     }
     function seeAll(object){
         //delete old info

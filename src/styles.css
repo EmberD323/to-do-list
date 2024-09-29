@@ -5,7 +5,7 @@
 .content{
     display:grid;
     grid-template-areas: "sidebar header" "sidebar body";
-    grid-template-columns: 2fr 6fr;
+    grid-template-columns: 1fr 6fr;
 
 }
 .content>*{
