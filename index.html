@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">   
+<script defer src="main.js"></script></head>
+<body>
+    <div class="content">
+        <div class="header">
+            <div>My Workspace</div>
+            <img src="027da9e91705c49dc054.svg" alt="briefcase-arrow-left-right-outline">
+        </div>
+        <div class="sidebar">
+            <div class="userinfo">
+                <img src="20b9d3034a7fb148a800.svg" alt="fox in a circle">
+                <div class="name">Ember</div>
+            </div>
+            <div class="todo">
+
+                
+            </div>
+            
+        </div>
+        <div class="body">
+            <div class="todoArea">
+                <div class="todoAreaHeader">Add a todo</div>
+                <form action="" id="toDoForm">
+                    <div class="title">
+                        <label for="title" >Title</label>
+                        <input type="text" id ="title" name="title" maxlength="20" required>
+                    </div>
+        
+                    <div class="description">
+                        <label for="description" >Description</label>
+                        <textarea name="description" id="description" name="description"></textarea>
+                    </div>
+        
+                    <div class="duedate">
+                        <label for="duedate" >Due Date</label>
+                        <input type="date" id ="duedate" name="duedate"required>
+                    </div>
+        
+                    <fieldset class="priority">
+                        <legend>Priority</legend>
+                        <div>
+                            <label for="high">High</label>
+                            <input type="radio" id ="high" name="priority" value="high" checked>
+                        </div>
+                        <div>
+                            <label for="medium">Medium</label>
+                            <input type="radio" id ="medium" name="priority" value="medium">
+                        </div>
+                        <div>
+                            <label for="low">Low</label>
+                            <input type="radio" id ="low" name="priority" value="low">
+                        </div>
+                    </fieldset>
+        
+                    <div class="notes">
+                        <label for="notes" >Notes</label>
+                        <textarea name="notes" id="notes"></textarea>
+                    </div>
+                    
+                    <div class="project">
+                        <label for="project" >Project(if any)</label>
+                        <select name="project" id="project">
+                        </select>
+                    </div>
+        
+                    <fieldset class="status">
+                        <legend>Status</legend>
+                        <div>
+                            <label for="notstarted">Not yet started</label>
+                            <input type="radio" id ="notstarted" name="status" value="notstarted" checked>
+                        </div>
+                        <div>
+                            <label for="started">Started</label>
+                            <input type="radio" id ="started" name="status" value="started">
+                        </div>
+                        <div>
+                            <label for="complete">Complete</label>
+                            <input type="radio" id ="complete" name="status" value="complete">
+                        </div>
+                    </fieldset>
+        
+                    <button type = "reset" class="reset">Reset</button>
+                    <button type = "submit" class="submit">Add to-do</button>
+                </form>
+            </div>
+            <div class="projectArea">
+                <div class="projectAreaHeader">My Projects</div>
+                <div class="projectDisplay">
+
+                </div>
+                <div class="detailContainer"></div>
+                <div class="projectAdd">
+                    <div class="heading">Create a new project</div>
+                    <form action="" id="projectForm">
+                        <label for="name" >Name</label>
+                        <input type="text" id ="name" name="name">
+
+                        <button type = "submit">Create</button>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
