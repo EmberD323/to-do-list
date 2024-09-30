@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-do</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">   
 </head>
 <body>
     <div class="content">
         <div class="header">
-            <div class="tab">To-dos</div>
-            <div class="tab">Projects</div>
+            <div>My Workspace</div>
+            <img src="./images/briefcase-arrow-left-right-outline.svg" alt="briefcase-arrow-left-right-outline">
         </div>
         <div class="sidebar">
             <div class="userinfo">
-                <div class="image">image</div>
+                <img src="./images/firefox.svg" alt="fox in a circle">
                 <div class="name">Ember</div>
             </div>
             <div class="todo">
@@ -26,16 +29,22 @@
             <div class="todoArea">
                 <div class="todoAreaHeader">Add a todo</div>
                 <form action="" id="toDoForm">
-                    <label for="title" >Title</label>
-                    <input type="text" id ="title" name="title" maxlength="20" required>
+                    <div class="title">
+                        <label for="title" >Title</label>
+                        <input type="text" id ="title" name="title" maxlength="20" required>
+                    </div>
         
-                    <label for="description" >Description</label>
-                    <textarea name="description" id="description" name="description"></textarea>
+                    <div class="description">
+                        <label for="description" >Description</label>
+                        <textarea name="description" id="description" name="description"></textarea>
+                    </div>
         
-                    <label for="duedate" >Due Date</label>
-                    <input type="date" id ="duedate" name="duedate"required>
+                    <div class="duedate">
+                        <label for="duedate" >Due Date</label>
+                        <input type="date" id ="duedate" name="duedate"required>
+                    </div>
         
-                    <fieldset>
+                    <fieldset class="priority">
                         <legend>Priority</legend>
                         <div>
                             <label for="high">High</label>
@@ -51,15 +60,18 @@
                         </div>
                     </fieldset>
         
-                    <label for="notes" >Notes</label>
-                    <textarea name="notes" id="notes"></textarea>
+                    <div class="notes">
+                        <label for="notes" >Notes</label>
+                        <textarea name="notes" id="notes"></textarea>
+                    </div>
                     
-                    <label for="project" >Project(if any)</label>
-                    <select name="project" id="project">
-                        
-                    </select>
+                    <div class="project">
+                        <label for="project" >Project(if any)</label>
+                        <select name="project" id="project">
+                        </select>
+                    </div>
         
-                    <fieldset>
+                    <fieldset class="status">
                         <legend>Status</legend>
                         <div>
                             <label for="notstarted">Not yet started</label>
@@ -75,8 +87,8 @@
                         </div>
                     </fieldset>
         
-                    <button type = "reset">Reset</button>
-                    <button type = "submit">Add to-do</button>
+                    <button type = "reset" class="reset">Reset</button>
+                    <button type = "submit" class="submit">Add to-do</button>
                 </form>
             </div>
             <div class="projectArea">
@@ -86,7 +98,7 @@
                 </div>
                 <div class="detailContainer"></div>
                 <div class="projectAdd">
-                    <div class="heading">Add a project</div>
+                    <div class="heading">Create a new project</div>
                     <form action="" id="projectForm">
                         <label for="name" >Name</label>
                         <input type="text" id ="name" name="name">
